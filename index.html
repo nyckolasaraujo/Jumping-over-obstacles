@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -131,10 +130,11 @@
         let highScore = localStorage.getItem('highScore') || 0;
         let gameWidth = game.clientWidth;
         let gameHeight = game.clientHeight;
+        let isGameActive = false;
         highScoreElement.textContent = highScore;
 
         function jump() {
-            if (!isJumping) {
+            if (!isJumping && isGameActive) {
                 isJumping = true;
                 let position = 0;
                 let jumpHeight = gameHeight * 0.3;
@@ -177,6 +177,11 @@
 
             let position = gameWidth;
             let moveInterval = setInterval(() => {
+                if (!isGameActive) {
+                    clearInterval(moveInterval);
+                    game.removeChild(obstacle);
+                    return;
+                }
                 if (position < -gameWidth * 0.1) {
                     clearInterval(moveInterval);
                     game.removeChild(obstacle);
@@ -214,6 +219,7 @@
         }
 
         function gameOver() {
+            isGameActive = false;
             clearInterval(gameLoop);
             if (score > highScore) {
                 highScore = score;
@@ -225,6 +231,7 @@
         }
 
         function startGame() {
+            isGameActive = true;
             startScreen.style.display = 'none';
             gameOverScreen.style.display = 'none';
             score = 0;
@@ -249,7 +256,7 @@
             if (event.code === 'Space') {
                 if (startScreen.style.display !== 'none') {
                     startGame();
-                } else {
+                } else if (isGameActive) {
                     jump();
                 }
                 event.preventDefault();
@@ -259,7 +266,7 @@
         game.addEventListener('touchstart', (event) => {
             if (startScreen.style.display !== 'none') {
                 startGame();
-            } else {
+            } else if (isGameActive) {
                 jump();
             }
             event.preventDefault();
@@ -272,6 +279,3 @@
     </script>
 </body>
 </html>
-
-
-
