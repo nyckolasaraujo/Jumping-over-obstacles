@@ -67,21 +67,29 @@
         #startScreen h1, #gameOverScreen h1 {
             font-size: 6vmin;
             text-align: center;
+            margin-bottom: 2vmin;
         }
         #startScreen p, #gameOverScreen p {
             font-size: 4vmin;
             text-align: center;
-            margin: 10px;
+            margin: 2vmin 0;
         }
-        #startScreen button, #gameOverScreen button {
-            margin-top: 20px;
-            padding: 10px 20px;
+        #startButton, #restartButton {
+            margin-top: 4vmin;
+            padding: 3vmin 6vmin;
             font-size: 4vmin;
             background-color: #4169E1;
             color: #FFFFFF;
             border: none;
-            border-radius: 5px;
+            border-radius: 2vmin;
             cursor: pointer;
+            touch-action: manipulation;
+        }
+        @media (max-width: 600px) {
+            #startButton, #restartButton {
+                padding: 4vmin 8vmin;
+                font-size: 5vmin;
+            }
         }
     </style>
 </head>
@@ -273,7 +281,16 @@
         });
 
         startButton.addEventListener('click', startGame);
+        startButton.addEventListener('touchstart', (event) => {
+            startGame();
+            event.preventDefault();
+        });
+
         restartButton.addEventListener('click', startGame);
+        restartButton.addEventListener('touchstart', (event) => {
+            startGame();
+            event.preventDefault();
+        });
 
         highScoreElement.textContent = highScore;
     </script>
